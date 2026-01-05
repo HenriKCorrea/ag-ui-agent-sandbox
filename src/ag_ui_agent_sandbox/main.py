@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+__all__ = ["app", "main"]
+
 import os
 
 import uvicorn
@@ -12,7 +14,7 @@ from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from agent import create_agent
+from ag_ui_agent_sandbox.agent import create_agent
 
 load_dotenv()
 
@@ -62,8 +64,12 @@ add_agent_framework_fastapi_endpoint(
     path="/",
 )
 
-
-if __name__ == "__main__":
+def main() -> None:
+    """Entry point for the application."""
     host = os.getenv("AGENT_HOST", "0.0.0.0")
     port = int(os.getenv("AGENT_PORT", "8000"))
-    uvicorn.run("main:app", host=host, port=port, reload=True)
+    # Use the full package path for reload to work correctly
+    uvicorn.run("ag_ui_agent_sandbox.main:app", host=host, port=port, reload=True)
+
+if __name__ == "__main__":
+    main()

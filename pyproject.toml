@@ -1,10 +1,20 @@
 [project]
-name = "agent"
+name = "ag-ui-agent-sandbox"
 version = "0.1.0"
-description = "Add your description here"
+description = "This is a starter template for building CopilotKit experiences using the Microsoft Agent Framework."
 readme = "README.md"
+authors = [
+    { name = "Henrique Krausburg Correa", email = "henrique.krausburg.correa@gmail.com" }
+]
 requires-python = ">=3.12"
 dependencies = [
     "agent-framework-ag-ui>=1.0.0b251117",
     "python-dotenv",
 ]
+
+[project.scripts]
+ag-ui-agent-sandbox = "ag_ui_agent_sandbox.main:main"
+
+[build-system]
+requires = ["uv_build>=0.9.21,<0.10.0"]
+build-backend = "uv_build"
