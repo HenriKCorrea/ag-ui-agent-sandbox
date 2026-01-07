@@ -19,23 +19,7 @@ This project is the python backend using [Microsoft Agent Framework](https://aka
    uv sync
    ```
 
-2. Set up your agent credentials. The backend automatically uses Azure when the Azure env vars below are present; otherwise it falls back to OpenAI. Create a `.env` file with one of the following configurations:
-
-   **OpenAI**
-   ```
-   OPENAI_API_KEY=sk-...your-openai-key-here...
-   OPENAI_CHAT_MODEL_ID=gpt-4o-mini
-   # If you want to use another model provider:
-   # OPENAI_API_BASE_URL="https://openrouter.ai/api/v1"
-   ```
-
-   **Azure OpenAI**
-   ```
-   AZURE_OPENAI_ENDPOINT=https://your-resource.openai.azure.com/
-   AZURE_OPENAI_CHAT_DEPLOYMENT_NAME=gpt-4o-mini
-   # If you are not relying on az login:
-   # AZURE_OPENAI_API_KEY=...
-   ```
+2. Set up your agent credentials. The backend automatically uses Azure when the Azure env vars below are present; otherwise it falls back to OpenAI. Create a `.env` file using [example.env](/example.env) as template (documentation included).
 
 3. Run the agent using uv:
 
