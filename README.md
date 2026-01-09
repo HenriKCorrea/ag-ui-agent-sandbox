@@ -19,7 +19,21 @@ This project is the python backend using [Microsoft Agent Framework](https://aka
    uv sync
    ```
 
-2. Set up your agent credentials. The backend automatically uses Azure when the Azure env vars below are present; otherwise it falls back to OpenAI. Create a `.env` file using [.env.example](/.env.example) as template (documentation included).
+2. Configure your chat client credentials using environment variables or a `.env` file.
+
+   [Dynaconf](https://www.dynaconf.com/) library is used for configuration management with validators defined in [config.py](src/ag_ui_agent_sandbox/config.py). Check the validators for environment variable names, detailed descriptions, default values, and constraints for each setting.
+
+   **Important:** You must prefix all configuration keys with `DYNACONF_`. For example, `CHAT_CLIENT_MODEL_ID` becomes `DYNACONF_CHAT_CLIENT_MODEL_ID`.
+
+   **Example `.env` file:**
+   ```bash
+   # Required
+   DYNACONF_CHAT_CLIENT_MODEL_ID="gpt-4o-mini"
+   
+   # Optional - for OpenAI or compatible providers
+   DYNACONF_CHAT_CLIENT_API_KEY="your_api_key_here"
+   DYNACONF_CHAT_CLIENT_BASE_URL="https://api.openai.com/v1"
+   ```
 
 3. Run the agent using uv:
 
@@ -32,8 +46,7 @@ This project is the python backend using [Microsoft Agent Framework](https://aka
 ## 📚 Documentation
 
 - [Microsoft Agent Framework](https://aka.ms/agent-framework) – Learn more about Microsoft Agent Framework and its features
-- [CopilotKit Documentation](https://docs.copilotkit.ai) – Explore CopilotKit’s capabilities
-
+- [CopilotKit Documentation](https://docs.copilotkit.ai) – Explore CopilotKit’s capabilities- [Dynaconf Documentation](https://www.dynaconf.com/) – Configuration management library used in this project
 ## License
 
 This project is licensed under the MIT License – see the [LICENSE](./LICENSE) file for details.
