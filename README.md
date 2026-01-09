@@ -19,7 +19,7 @@ This project is the python backend using [Microsoft Agent Framework](https://aka
    uv sync
    ```
 
-2. Set up your agent credentials. The backend automatically uses Azure when the Azure env vars below are present; otherwise it falls back to OpenAI. Create a `.env` file using [example.env](/example.env) as template (documentation included).
+2. Set up your agent credentials. The backend automatically uses Azure when the Azure env vars below are present; otherwise it falls back to OpenAI. Create a `.env` file using [.env.example](/.env.example) as template (documentation included).
 
 3. Run the agent using uv:
 
