@@ -6,10 +6,11 @@ readme = "README.md"
 authors = [
     { name = "Henrique Krausburg Correa", email = "henrique.krausburg.correa@gmail.com" }
 ]
-requires-python = ">=3.14"
+requires-python = ">=3.13"
 dependencies = [
     "agent-framework-ag-ui>=1.0.0b251223",
     "dynaconf>=3.2.12",
+    "langfuse>=3.11.2",
 ]
 
 [project.scripts]
