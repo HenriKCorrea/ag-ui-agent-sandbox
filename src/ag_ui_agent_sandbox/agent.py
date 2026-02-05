@@ -7,6 +7,7 @@ from typing import Annotated
 
 from agent_framework import ChatAgent, ChatClientProtocol, ai_function
 from agent_framework_ag_ui import AgentFrameworkAgent
+from ag_ui_agent_sandbox.telemetry_agent import TelemetryAgentFrameworkAgent
 from pydantic import Field
 
 STATE_SCHEMA: dict[str, object] = {
@@ -113,7 +114,7 @@ def create_agent(chat_client: ChatClientProtocol) -> AgentFrameworkAgent:
         tools=[update_proverbs, get_weather, go_to_moon],
     )
 
-    return AgentFrameworkAgent(
+    return TelemetryAgentFrameworkAgent(
         agent=base_agent,
         name="CopilotKitMicrosoftAgentFrameworkAgent",
         description="Manages proverbs, weather snippets, and human-in-the-loop moon launches.",
