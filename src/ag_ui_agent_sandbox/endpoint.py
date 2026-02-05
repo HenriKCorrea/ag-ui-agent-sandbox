@@ -11,7 +11,7 @@ from agent_framework import AgentProtocol
 from fastapi import FastAPI, Request
 from fastapi.responses import StreamingResponse
 
-from ._agent import AgentFrameworkAgent
+from agent_framework_ag_ui import AgentFrameworkAgent
 from langfuse import propagate_attributes
 from opentelemetry import trace
 from contextlib import nullcontext
@@ -73,7 +73,7 @@ def add_agent_framework_fastapi_endpoint(
             async def event_generator():
                 encoder = EventEncoder()
                 event_count = 0
-                
+
                 # # Mapping to Observability
                 # # threadId → Langfuse session_id (groups traces by conversation)
                 # # runId → OpenTelemetry trace_id or Langfuse trace_id (identifies individual execution)
@@ -82,13 +82,27 @@ def add_agent_framework_fastapi_endpoint(
                 # # Analytics: Track conversation length (count unique runIds per threadId)
                 # # Observability: Group all operations from one request using runId, analyze user behavior across conversation using threadId
                 # Simply propagate session_id to Langfuse
-                thread_id = input_data.get("threadId")
-                with propagate_attributes(session_id=thread_id, metadata={"run_id": input_data.get("runId")}) if thread_id else nullcontext():
+                attributes = {
+                    "session_id": input_data.get("threadId", None),
+                    "metadata": {
+                        k: v for k, v in {
+                            "run_id": input_data.get("runId", None),
+                            "user_id": input_data.get("userId", None),
+                            # Add more keys here as needed
+                        }.items() if v is not None
+                    } or None,
+                    # Add more top-level attributes here as needed
+                }
+
+                # Remove keys with None values
+                attributes = {k: v for k, v in attributes.items() if v is not None}
+
+                with propagate_attributes(**attributes) if attributes else nullcontext():
                     # Also set on OTEL span for MAF compatibility
                     current_span = trace.get_current_span()
-                    if current_span and current_span.is_recording() and thread_id:
-                        current_span.set_attribute("gen_ai.conversation.id", thread_id)
-                                    
+                    if current_span and current_span.is_recording() and attributes.get("session_id"):
+                        current_span.set_attribute("gen_ai.conversation.id", attributes["session_id"])
+
                     async for event in wrapped_agent.run_agent(input_data):
                         event_count += 1
                         logger.debug(f"[{path}] Event {event_count}: {type(event).__name__}")
@@ -105,7 +119,7 @@ def add_agent_framework_fastapi_endpoint(
                             else f"[{path}] Encoded as: {encoded}"
                         )
                         yield encoded
-                    
+
                     logger.info(f"[{path}] Completed streaming {event_count} events")
 
             return StreamingResponse(
